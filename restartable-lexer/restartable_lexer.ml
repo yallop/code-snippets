@@ -1,5 +1,6 @@
 (* Using async to block waiting for input in an ocamllex-generated lexer *)
 
+open Core.Std
 open Async.Std
 
 (* Indicate that there's nothing to read *)
@@ -16,7 +17,7 @@ let tokenize : string Pipe.Reader.t -> lex:(Lexing.lexbuf -> 'token) -> unit -> 
     let store ~src ~src_pos ~dst ~max =
       let src_len = String.length src - src_pos in
       let len = min src_len max in
-      StringLabels.blit ~src ~dst ~src_pos ~len ~dst_pos:0;
+      String.blit ~src ~dst ~src_pos ~len ~dst_pos:0;
       if src_len > len then
         buffer := Some (src_pos + len, src)
       else
@@ -53,7 +54,7 @@ let copy_from reader writer =
   let rec loop () =
     Reader.read reader buf >>= function
       | `Ok len ->
-        Pipe.write writer (StringLabels.sub buf ~pos:0 ~len) >>= loop
+        Pipe.write writer (String.sub buf ~pos:0 ~len) >>= loop
       | `Eof ->
         return ()
   in loop ()
