@@ -1,0 +1,13 @@
+# Set OCamlMakefile to use
+export OCAMLMAKEFILE = ./OCamlMakefile
+
+# Build an executable that generates stubs
+SOURCES = stubby_ctypes.ml \
+	  external_functions.ml \
+	  generators.ml \
+	  example_bindings.ml \
+	  generate_example_bindings.ml
+
+RESULT = generate_stubs
+
+include $(OCAMLMAKEFILE)

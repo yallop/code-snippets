@@ -1,0 +1,23 @@
+# Set OCamlMakefile to use
+export OCAMLMAKEFILE = ./OCamlMakefile
+
+CFLAGS = -W -Wall -ansi -pedantic -g
+PRE_TARGETS = generate_stubs generated_example_bindings.ml
+SOURCES = external_functions.ml \
+	  stubby_ctypes.ml \
+	  generators.ml \
+	  example_bindings.ml \
+	  generated_example_bindings.ml \
+	  generated_example_stubs.c \
+	  main.ml
+RESULT = stubby_example
+
+all:	bc
+
+generated_example_bindings.ml: generate_stubs
+	./generate_stubs
+
+generated_example_stubs.c: generate_stubs
+	./generate_stubs
+
+include $(OCAMLMAKEFILE)
