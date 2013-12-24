@@ -17,6 +17,8 @@ end
 
 type ('a, 'b) sub = (module SubPos with type a = 'a and type b = 'b)
 
+type ('a, 'b) subneg = (module SubNeg with type a = 'a and type b = 'b)
+
 module FlipPos (S : SubPos)  : SubNeg with type a = S.a and type b = S.b =
 struct
   type a = S.a and b = S.b
@@ -36,6 +38,12 @@ struct
     let cast  = Coerce.cast (fun x -> x)
   end
 end
+
+let subneg_of_sub : type a b. (a, b) sub -> (a, b) subneg =
+  fun (module S) -> (module FlipPos(S))
+
+let sub_of_subneg : type a b. (a, b) subneg -> (a, b) sub =
+  fun (module S) -> (module FlipNeg(S))
 
 module SubstPos (Pos : POS) =
 struct

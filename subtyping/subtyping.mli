@@ -17,12 +17,11 @@ sig
   type a and b
   module Coerce (Neg : NEG) : sig val cast : b Neg.t -> a Neg.t end
 end
+type ('a, 'b) subneg = (module SubNeg with type a = 'a and type b = 'b)
 
 (* We can freely convert between the two definitions of subtyping *)
-module FlipPos (S : SubPos) :
-  SubNeg with type a = S.a and type b = S.b
-module FlipNeg (S : SubNeg) :
-  SubPos with type a = S.a and type b = S.b
+val sub_of_subneg : ('a, 'b) subneg -> ('a, 'b) sub
+val subneg_of_sub : ('a, 'b) sub -> ('a, 'b) subneg
 
 (* We can obtain an upcast in a positive context from a proof of subtyping *)
 module SubstPos (Pos : POS) :
