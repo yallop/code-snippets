@@ -12,8 +12,8 @@ type ('a, 'model) cexp = ..
 (* The signature of interpretations *)
 module type Interpretation =
 sig
-  type model = T (* The name of the model *)
-  type 'a t      (* The type of the interpretation *)
+  type model (* The name of the model *)
+  type 'a t  (* The type of the interpretation *)
 
   (* The term language of STLC *)
   val const : int -> (int, model) cexp
